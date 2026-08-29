@@ -1,0 +1,10 @@
+[project]
+name = "net-411-last"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "dotenv>=0.9.9",
+    "openai>=3.6.0",
+]
