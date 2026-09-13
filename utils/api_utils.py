@@ -9,7 +9,10 @@ logger = logging.getLogger(__name__)
 def generate_part(
     client: OpenAI, prompt: str, full_task: str, current_part: str
 ) -> str | None:
-    logger.debug(f"Начинается запрос к модели google/gemini-2.5-flash-lite")
+
+    MODEL: str = "qwen/qwen3.8-flash-lite"
+
+    logger.debug(f"Начинается запрос к модели {MODEL}")
 
     PROMPT = f"""
     Ты выполнляешь глобальную задачу: {prompt}
@@ -17,7 +20,7 @@ def generate_part(
     Твоя текущая задача: {current_part}"""
 
     completion = client.chat.completions.create(
-        model="google/gemini-2.5-flash-lite",
+        model=MODEL,
         messages=[{"role": "user", "content": PROMPT}],
     )
     return completion.choices[0].message.content
@@ -38,7 +41,7 @@ def generate_full_conspect(
 
     for task in tasks_list:
         logger.info(f"Генерация части {parts_count} из {len(tasks_list)} началась")
-        print(f"Генерация части {parts_count} из {len(tasks_list)} началась")
+
         try:
             part_result = generate_part(client, prompt, full_task, task)
             result.append(part_result)
@@ -58,8 +61,8 @@ def generate_full_conspect(
                 raise e
 
         else:
-            parts_count += 1
             logging.info(f"Генерация части {parts_count} из {len(tasks_list)} завершена")
+            parts_count += 1
             continue
 
     return result
